@@ -21,15 +21,19 @@ class Motor {
 class Motors {
   public:
     Motor motor_left,motor_right;
-    void setup() {
+    void setup(bool enable_flag = 1) {
       Motors::motor_right.setup(6,9);
       Motors::motor_left.setup(3,5);
+      Motors::enable_flag = enable_flag;
     }
     void run(int l=0, int r=0) {
-      Motors::motor_left.run(l);
-      Motors::motor_right.run(r);
+      if (Motors::enable_flag) {
+        Motors::motor_left.run(l);
+        Motors::motor_right.run(r);
+      }
     }
-  // private:
+  private:
+    bool enable_flag;
 };
 
 Motors motors;
