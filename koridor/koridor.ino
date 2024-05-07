@@ -50,18 +50,20 @@ void setup() {
   servo_up.write(0); // down - 160, up - 0
   for (long int t = millis(); t+500>millis();) ServoUpdate();
 
-  motors.run(50,50); delay(2000);
-  motors.run(0,0); delay(2000);
-  motors.run(-50,-50); delay(2000);
-  motors.run(-50,50); delay(2000);
-  motors.run(50,-50); delay(2000);
-  motors.run(0,0); delay(2000);
+  // motors.run(50,50); delay(2000);
+  // motors.run(0,0); delay(2000);
+  // motors.run(-50,-50); delay(2000);
+  // motors.run(-50,50); delay(2000);
+  // motors.run(50,-50); delay(2000);
+  // motors.run(0,0); delay(2000);
 
-  // servo_finger.detach();
-  // servo_up.detach();
-  // servoTake();
+  servoTake();
 
   // rotationEnc(-360);
+  // delay(1000);
+  // rotationEnc(360);
+
+  // forwardEnc(100);
 }
 
 long int pid_i = 0;
@@ -88,19 +90,20 @@ void forwardEnc(long int distance) {
 }
 
 void rotationEnc(long int angle) {
-  angle *= 17.5; // попугаев в градусе
   int speed = 90;
+  // angle *= 12.2; // попугаев в градусе
   if (angle<0) {
-    // angle *= -1;
+    angle *= 10;
     speed *= -1;
   }
+  else angle *= 12.2; // попугаев в градусе
   enc1.clear();               // Обнуляем энкодер 1
   enc2.clear();               // Обнуляем энкодер 2
   motors.run(-speed,speed);
   while (abs(angle-enc2.get())>100) {
-    // long int p = enc2.get()*1.09-enc1.get();
+    // long int p = enc2.get()*1.09+enc1.get();
     // int pid = constrain(p*0.1,-200,200);
-    // motors.run(speed+pid,speed-pid);
+    // motors.run(-speed,speed+pid);
     Serial.println(enc1.get());
   }
   motors.run(speed,-speed);
@@ -121,21 +124,25 @@ void servoTake() {
   servo_finger.write(30); // take - 120, drop - 30
   servo_up.write(0); // down - 160, up - 0
   delay(1000);
-  for (int i = 0; i<160; i++) {
+  for (int i = 0; i<180; i++) {
     servo_up.write(i);
     delay(speed);
+    ServoUpdate();
   }
-  for (int i = 30; i<120; i++) {
+  for (int i = 30; i<130; i++) {
     servo_finger.write(i);
     delay(speed);
+    ServoUpdate();
   }
-  for (int i = 160; i>0; i--) {
+  for (int i = 180; i>0; i--) {
     servo_up.write(i);
     delay(speed);
+    ServoUpdate();
   }
-  for (int i = 120; i>30; i--) {
+  for (int i = 130; i>30; i--) {
     servo_finger.write(i);
     delay(speed);
+    ServoUpdate();
   }
 }
 
