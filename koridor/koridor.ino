@@ -52,12 +52,12 @@ void setup() {
   servo_up.write(SERVO_UP_UP); // down - 160, up - 0
   for (long int t = millis(); t+500>millis();) ServoUpdate();
 
-  // motors.run(50,50); delay(2000);
-  // motors.run(0,0); delay(2000);
-  // motors.run(-50,-50); delay(2000);
-  // motors.run(-50,50); delay(2000);
-  // motors.run(50,-50); delay(2000);
-  // motors.run(0,0); delay(2000);
+  motors.run(50,50); delay(2000);
+  motors.run(0,0); delay(2000);
+  motors.run(-50,-50); delay(2000);
+  motors.run(-50,50); delay(2000);
+  motors.run(50,-50); delay(2000);
+  motors.run(0,0); delay(2000);
 
   servoTake();
 
