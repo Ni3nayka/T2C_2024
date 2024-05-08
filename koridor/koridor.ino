@@ -14,14 +14,16 @@
 // const int pin = 9;
 ServoMotor servo_finger(11);             // инициализация серводвигателя, названного "test_servo", который находится на порте D9
 ServoMotor servo_up(10);             // инициализация серводвигателя, названного "test_servo", который находится на порте D9
-
+#define SERVO_FINGER_TAKE 130
+#define SERVO_FINGER_DROP 30
+#define SERVO_UP_UP 0
+#define SERVO_UP_DOWN 180
 
 long int t = 0;
 #define MOTOR_SPEED 100
 Filter filter_ultrasonar_1,filter_ultrasonar_2;
 
 #define MOTOR_RUN_FLAG 1
-
 
 #include <arduino_encoder.h>  // Подключаем библиотеку
 Encoder enc1;                 // первым энкодером
@@ -46,8 +48,8 @@ void setup() {
     filter_ultrasonar_2.addData(readUltrasonar(2));
   }
 
-  servo_finger.write(30); // take - 120, drop - 30
-  servo_up.write(0); // down - 160, up - 0
+  servo_finger.write(SERVO_FINGER_DROP); // take - 120, drop - 30
+  servo_up.write(SERVO_UP_UP); // down - 160, up - 0
   for (long int t = millis(); t+500>millis();) ServoUpdate();
 
   // motors.run(50,50); delay(2000);
@@ -124,22 +126,22 @@ void servoTake() {
   servo_finger.write(30); // take - 120, drop - 30
   servo_up.write(0); // down - 160, up - 0
   delay(1000);
-  for (int i = 0; i<180; i++) {
+  for (int i = SERVO_UP_UP; i<SERVO_UP_DOWN; i++) {
     servo_up.write(i);
     delay(speed);
     ServoUpdate();
   }
-  for (int i = 30; i<130; i++) {
+  for (int i = SERVO_FINGER_DROP; i<SERVO_FINGER_TAKE; i++) {
     servo_finger.write(i);
     delay(speed);
     ServoUpdate();
   }
-  for (int i = 180; i>0; i--) {
+  for (int i = SERVO_UP_DOWN; i>SERVO_UP_UP; i--) {
     servo_up.write(i);
     delay(speed);
     ServoUpdate();
   }
-  for (int i = 130; i>30; i--) {
+  for (int i = SERVO_FINGER_TAKE; i>SERVO_FINGER_DROP; i--) {
     servo_finger.write(i);
     delay(speed);
     ServoUpdate();
